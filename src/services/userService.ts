@@ -80,11 +80,11 @@ export class UserService {
     return userWithTokens as UserDocument & { accessToken: string; refreshToken: string };
   }
 
-  async logout(refreshToken:string) {
+  async logout(refreshToken: string) {
     const token = await tokenService.removeToken(refreshToken);
     return token;
   }
-  
+
   // token refresh
   async refresh(refreshToken: string): Promise<UserDocument & { accessToken: string; refreshToken: string }> {
     const tokenPayload = TokenService.validateRefreshToken(refreshToken);
@@ -230,6 +230,60 @@ export class UserService {
       total,
       pages: Math.ceil(total / limit)
     };
+  }
+  async addToFavorites(userId: string, trackId: string): Promise<UserDocument | null> {
+    return await User.findByIdAndUpdate(
+      userId,
+      {
+        $addToSet: { favoriteTracks: trackId }
+      },
+      { new: true }
+    );
+  }
+
+  async removeFromFavorites(userId: string, trackId: string): Promise<UserDocument | null> {
+    return await User.findByIdAndUpdate(
+      userId,
+      {
+        $pull: { favoriteTracks: trackId }
+      },
+      { new: true }
+    );
+  }
+
+  async addListeningHistory(userId: string, trackId: string, duration: number): Promise<UserDocument | null> {
+    return await User.findByIdAndUpdate(
+      userId,
+      {
+        $push: {
+          recentlyPlayed: {
+            trackId,
+            playedAt: new Date(),
+            duration
+          }
+        },
+        $inc: { totalListeningTime: duration },
+        $set: { lastSeen: new Date() }
+      },
+      { new: true }
+    );
+  }
+
+  async addPlaylist(userId: string, navidromeId: string, name: string, trackCount: number): Promise<UserDocument | null> {
+    return await User.findByIdAndUpdate(
+      userId,
+      {
+        $push: {
+          playlists: {
+            navidromeId,
+            name,
+            trackCount,
+            createdAt: new Date()
+          }
+        }
+      },
+      { new: true }
+    );
   }
 }
 

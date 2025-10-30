@@ -14,6 +14,7 @@ import {
 } from './middleware/errorMiddleware';
 import { requestLogger } from './middleware/loggingMiddleware';
 import cookieParser from 'cookie-parser';
+import musicRoutes from './routes/musicRoutes';
 
 class Server {
     private app: express.Application;
@@ -42,7 +43,7 @@ class Server {
     private initializeMiddlewares(): void {
         // Cookie-parser
         this.app.use(cookieParser());
-        
+
         // Security middleware
         this.app.use(helmet({
             crossOriginResourcePolicy: { policy: "cross-origin" }
@@ -94,6 +95,7 @@ class Server {
         // API routes
         this.app.use('/api/auth', authRoutes);
         // this.app.use('/api/users', userRoutes);
+        this.app.use('/api/music', musicRoutes);
 
         // Root endpoint
         this.app.get('/', (req, res) => {

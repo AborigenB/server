@@ -28,7 +28,7 @@ const UserSchema: Schema = new Schema({
     lowercase: true,
     match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
   },
-  password : {
+  password: {
     type: String,
     required: [true, 'Password is required'],
     trim: true,
@@ -64,6 +64,29 @@ const UserSchema: Schema = new Schema({
     type: String,
     trim: true
   }],
+  favoriteTracks: [{
+    type: String,
+    default: []
+  }],
+
+  recentlyPlayed: [{
+    trackId: String,
+    playedAt: {
+      type: Date,
+      default: Date.now
+    },
+    duration: Number
+  }],
+
+  playlists: [{
+    navidromeId: String,
+    name: String,
+    trackCount: Number,
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
+  }],
   favoriteGenres: [{
     type: String,
     trim: true
@@ -92,33 +115,33 @@ const UserSchema: Schema = new Schema({
 // UserSchema.index({ totalListeningTime: -1 });
 
 // Статические методы
-UserSchema.statics.findByEmail = function(email: string) {
+UserSchema.statics.findByEmail = function (email: string) {
   return this.findOne({ email: email.toLowerCase() });
 };
 
-UserSchema.statics.findByUsername = function(username: string) {
+UserSchema.statics.findByUsername = function (username: string) {
   return this.findOne({ username: new RegExp(username, 'i') });
 };
 
 // Методы экземпляра
-UserSchema.methods.updateLastSeen = function() {
+UserSchema.methods.updateLastSeen = function () {
   this.lastSeen = new Date();
   return this.save();
 };
 
-UserSchema.methods.addAchievement = function(achievement: string) {
+UserSchema.methods.addAchievement = function (achievement: string) {
   if (!this.achievements.includes(achievement)) {
     this.achievements.push(achievement);
   }
   return this.save();
 };
 
-UserSchema.methods.addListeningTime = function(minutes: number) {
+UserSchema.methods.addListeningTime = function (minutes: number) {
   this.totalListeningTime += minutes;
   return this.save();
 };
 
-UserSchema.methods.updateFavoriteGenres = function(genres: string[]) {
+UserSchema.methods.updateFavoriteGenres = function (genres: string[]) {
   this.favoriteGenres = [...new Set(genres)]; // Убираем дубликаты
   return this.save();
 };

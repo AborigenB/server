@@ -12,6 +12,18 @@ export interface User {
   achievements: string[];
   favoriteGenres: string[];
   totalListeningTime: number;
+  favoriteTracks: string[]; // Navidrome track IDs
+  recentlyPlayed: {
+    trackId: string;
+    playedAt: Date;
+    duration: number;
+  }[];
+  playlists: {
+    navidromeId: string;
+    name: string;
+    trackCount: number;
+    createdAt: Date;
+  }[];
 }
 
 export interface UserCreate {

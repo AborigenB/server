@@ -9,7 +9,12 @@ export const config = {
   jwtRefreshToken: process.env.JWT_REFRESH_TOKEN,
   dbName: process.env.DB_NAME || 'testdb',
   nodeEnv: process.env.NODE_ENV,
-  clientUrl: process.env.CLIENT_URL || 'http://localhost:3000'
+  clientUrl: process.env.CLIENT_URL || 'http://localhost:3000',
+  navidromeUrl: process.env.NAVIDROME_URL || 'http://localhost:4533',
+  navidromeUser: process.env.NAVIDROME_USER,
+  navidromePassword: process.env.NAVIDROME_PASSWORD,
+  musicCacheTTL: process.env.MUSIC_CACHE_TTL,
+  maxPlaylistSize: process.env.MAX_PLAYLIST_SIZE,
 
 };
 

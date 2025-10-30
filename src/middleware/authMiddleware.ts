@@ -61,3 +61,14 @@ export const authorizeUser = (
 
     next();
 };
+
+export const updateLastSeen = async (
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction
+) => {
+    if (req.user && req.user.updateLastSeen) {
+        await req.user.updateLastSeen();
+    }
+    next();
+};
