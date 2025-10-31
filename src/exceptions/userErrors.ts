@@ -1,6 +1,9 @@
 import { ApiError } from './apiErrors';
 
 export class UserErrors {
+    static NotFound() {
+        return ApiError.NotFound('Плейлист не найден .');
+    }
     static UserNotFound() {
         return ApiError.NotFound('Пользователь не найден');
     }

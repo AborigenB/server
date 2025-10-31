@@ -50,7 +50,8 @@ export const authorizeUser = (
 ) => {
     const requestedUserId = req.params.id;
     const currentUserId = req.user?._id?.toString();
-
+    console.log(requestedUserId)
+    console.log(currentUserId)
     if (!currentUserId) {
         throw AuthErrors.TokenRequired();
     }

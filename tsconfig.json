@@ -1,5 +1,5 @@
 {
-  "include": ["**/*.ts", "env.d.ts"],
+  "include": ["**/*.ts", "env.d.ts", "src/tests/playlistTest.cjs"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
     /* Projects */

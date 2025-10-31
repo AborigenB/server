@@ -6,7 +6,9 @@ import { connectToMongoDB } from './config/database';
 import { config } from './config/process';
 
 // import authRoutes from './routes/authRoutes';
-import authRoutes from './routes/AuthRouter';
+import authRouter from './routes/AuthRouter';
+import musicRouter from './routes/musicRoutes';
+import playlistRouter from './routes/playlistRouter';
 
 import {
     errorHandler,
@@ -14,7 +16,6 @@ import {
 } from './middleware/errorMiddleware';
 import { requestLogger } from './middleware/loggingMiddleware';
 import cookieParser from 'cookie-parser';
-import musicRoutes from './routes/musicRoutes';
 
 class Server {
     private app: express.Application;
@@ -93,9 +94,10 @@ class Server {
         });
 
         // API routes
-        this.app.use('/api/auth', authRoutes);
+        this.app.use('/api/auth', authRouter);
+        this.app.use('/api/music', musicRouter);
+        this.app.use('/api/playlists', playlistRouter);
         // this.app.use('/api/users', userRoutes);
-        this.app.use('/api/music', musicRoutes);
 
         // Root endpoint
         this.app.get('/', (req, res) => {

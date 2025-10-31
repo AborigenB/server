@@ -5,22 +5,22 @@ import { authenticateToken, updateLastSeen } from '../middleware/authMiddleware'
 import { validateRequest } from '../middleware/validationMiddleware';
 import { asyncHandler } from '../middleware/errorMiddleware';
 
-const router = Router();
+const musicRouter = Router();
 
-router.use(authenticateToken);
-router.use(updateLastSeen);
+musicRouter.use(authenticateToken);
+musicRouter.use(updateLastSeen);
 
 // Получение треков
-router.get('/tracks', asyncHandler(musicController.getTracks));
+musicRouter.get('/tracks', asyncHandler(musicController.getTracks));
 
 // Получение информации о треке
-router.get('/tracks/:trackId', asyncHandler(musicController.getTrack));
+musicRouter.get('/tracks/:trackId', asyncHandler(musicController.getTrack));
 
 // Поиск
-router.get('/search', asyncHandler(musicController.search));
+musicRouter.get('/search', asyncHandler(musicController.search));
 
 // Избранное
-router.post(
+musicRouter.post(
   '/favorites',
   [
     body('trackId')
@@ -32,7 +32,7 @@ router.post(
 );
 
 // Отслеживание прослушивания
-router.post(
+musicRouter.post(
   '/listen',
   [
     body('trackId')
@@ -47,7 +47,7 @@ router.post(
 );
 
 // Плейлисты
-router.post(
+musicRouter.post(
   '/playlists',
   [
     body('name')
@@ -62,6 +62,6 @@ router.post(
 );
 
 // Рекомендации
-router.get('/recommendations', asyncHandler(musicController.getRecommendations));
+musicRouter.get('/recommendations', asyncHandler(musicController.getRecommendations));
 
-export default router;
+export default musicRouter;

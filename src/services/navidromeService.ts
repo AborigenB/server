@@ -245,7 +245,62 @@ export class NavidromeService {
         }
     }
 
+    async getPlaylistInfo(playlistId: string): Promise<any> {
+        try {
+            const response = await this.client.get('/rest/getPlaylist.view', {
+                params: { id: playlistId }
+            });
 
+            const data = response.data['subsonic-response'];
+
+            if (data.status !== 'ok') {
+                throw new Error(data.error?.message || 'Failed to get playlist info');
+            }
+
+            return data.playlist;
+        } catch (error) {
+            console.error('Error getting playlist info:', error);
+            throw error;
+        }
+    }
+
+    // Обновление плейлиста
+    async updatePlaylist(playlistId: string, trackIds: string[]): Promise<void> {
+        try {
+            // Navidrome API требует пересоздания плейлиста для обновления
+            // Сначала получаем информацию о текущем плейлисте
+            const playlistInfo = await this.getPlaylistInfo(playlistId);
+
+            // Удаляем старый плейлист (если возможно)
+            // И создаем новый с обновленными треками
+            const newPlaylistId = await this.createPlaylist(playlistInfo.name, trackIds);
+
+            // Здесь может потребоваться дополнительная логика для сохранения ID
+            console.log('Playlist updated, new ID:', newPlaylistId);
+
+        } catch (error) {
+            console.error('Error updating playlist:', error);
+            throw error;
+        }
+    }
+
+    // Получение плейлистов пользователя из Navidrome
+    async getUserPlaylists(): Promise<any[]> {
+        try {
+            const response = await this.client.get('/rest/getPlaylists.view');
+
+            const data = response.data['subsonic-response'];
+
+            if (data.status !== 'ok') {
+                throw new Error(data.error?.message || 'Failed to get playlists');
+            }
+
+            return data.playlists?.playlist || [];
+        } catch (error) {
+            console.error('Error getting user playlists:', error);
+            return [];
+        }
+    }
 
     // Private mapping methods
     private mapTrack(track: any): NavidromeTrack {
