@@ -69,7 +69,9 @@ export class UserService {
     // Возвращаем объект с правильной структурой
     const userWithTokens: any = {
       ...user.toObject(), // Преобразуем Mongoose документ в обычный объект
-      ...tokens
+      tokens: {
+        ...tokens
+      }
     };
 
     // Явно добавляем _id если его нет в результате

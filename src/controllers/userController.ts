@@ -44,7 +44,6 @@ export class UserController {
     res.status(200).json({
       success: true,
       message: 'Пользователь успешно вышел из системы',
-      data: token
     })
   }
 
